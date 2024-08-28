@@ -1,0 +1,124 @@
+﻿body {
+    background-image: url('/images/background/BackGroundBtn.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.header {
+    padding: 60px;
+    text-align: center;
+    background: rgba(0,0,,0.7); 
+    backdrop-filter: blur(10px); 
+    color: white;
+    font-size: 30px;
+    position: relative; 
+}
+
+p {
+    font-family: "Amatic SC", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: xx-large;
+    color: white;
+}
+
+#headH {
+    font-family: "Amatic SC", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    color: #ffce67;
+    font-size: 3em;
+}
+
+#FrozenFoodPic {
+    margin-right: 32%;
+    width: 37%;
+    border-radius: 10px;
+}
+
+#FrozenFoodPicDiv {
+
+    backdrop-filter: blur(1px);
+    width: 75%;
+    margin-bottom: 10%;
+    border: 2px solid black;
+    padding: 3%;
+    margin-right: 20%;
+    position: relative; 
+}
+
+    #FrozenFoodPicDiv::before,
+    #FrozenFoodPicDiv::after {
+        content: "";
+        position: absolute;
+        border: 2px solid black;
+        width: calc(100% - 20px);
+        height: calc(100% - 20px);
+        pointer-events: none; 
+    }
+
+    #FrozenFoodPicDiv::before {
+        top: -10px; 
+        left: -10px; 
+        border-width: 2px 0 0 2px;
+    }
+
+    #FrozenFoodPicDiv::after {
+        bottom: -10px;
+        right: -10px;
+        border-width: 0 2px 2px 0;
+    }
+
+@@media (max-width: 480px), (max-width: 768px) {
+    #FrozenFoodPicDiv {
+        width: 100%; 
+        border: 2px solid black;
+        border-radius: 5%;
+        padding: 3%;
+        margin-right: 0; 
+        margin-bottom: 50%; 
+    }
+}
+
+.meat-section {
+    margin-bottom: 40px;
+    padding: 20px;
+    background: rgba(0,0,,0.7); 
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+    .meat-section h1 {
+        color: white;
+        font-family: "Amatic SC", sans-serif;
+        font-weight: bold;
+        color: #ffce67;
+    }
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+
+    ul li {
+        font-family: "Amatic SC", sans-serif;
+        background: rgba(0,0,,0.7);
+        background-size: 15px;
+        padding-left: 25px;
+        margin-bottom: 10px;
+        color: white;
+        font-size: xx-large;
+    }
+
+.H1class {
+    font-family: "Amatic SC", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    color: #ffce67;
+    font-size: 4em;
+}
+
+#DivEnd {
+    margin-bottom: 60%;
+}

@@ -1,0 +1,370 @@
+﻿@model IEnumerable<WebApplication1.Models.Recipes_dbModel> // ודא שהנתיב למודל נכון
+
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <title>מתכונים לפי רכיבים</title>
+   <link rel="stylesheet" href="/css/HomePage.css"> <!--  הקובץ המותאם שלך -->
+     <!-- <link rel="stylesheet" href="/css/Global.css">  הקובץ המותאם שלך -->
+
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap" rel="stylesheet">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</head>
+<body>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-12" style="padding:0; margin:0;">
+                <div id="btnsBckgrund"> 
+                    <div>
+                        <div id="selected-ingredients-display" aria-live="polite">אין רכיבים נבחרים:</div> <!-- רכיבים שנבחרו -->
+                        <div id="ingredients"></div> <!-- רשימת הרכיבים -->
+                    </div>
+
+                    <div class="row" id="DivContent">        
+                        <div class="col-lg-3 col-md-6 col-sm-12 mb-3 guide-item borderDivContent "  >  
+                            <a asp-controller="RecipeWeb" asp-action="MeatGuide">
+                                <img src="~/images/img/CowCutsDiagram.webp" alt="מדריך בשר" id="CowPic2">
+                            </a>
+                        </div>                
+                        <div class="col-lg-3 col-md-6 col-sm-12 mb-3 guide-item borderDivContent" >
+                            <a asp-controller="RecipeWeb" asp-action="FoodPreservationGuide">
+                                <img src="~/images/img/FoodPreservation.webp" alt="מדריך לשימור מזון" id="FoodPreservationPic">
+                            </a>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12 mb-3 guide-item borderDivContent">
+                            <a asp-controller="RecipeWeb" asp-action="FreezingFoodGuide">
+                                <img src="~/images/img/FreezingFood.webp" alt="מדריך להקפאת מזון" id="FreezingFoodPic">
+                            </a>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12 mb-3 guide-item borderDivContent">
+                            <a asp-controller="RecipeWeb" asp-action="SpicesGuide">
+								@*  <img src="~/images/img/Spices.jpg" >*@
+                                <img src="~/images/img/spices.webp" alt="מדריך לתבלינים" id="SpicesPic" />
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- הוספת עוגן לפני הצגת המתכונים -->
+                    <div id="recipes-display-anchor"></div> 
+                    <!-- תצוגת המתכונים -->
+                    <div id="recipes-display"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" id="SendResponseDiv">
+            <div class="col-md-4" id="DivSendRes">
+                <div id="CubeBackground">
+                    <h1 id="fontCube">קוביה לשליחת תגובות:</h1>
+                    <form id="contactForm" action="#" method="post">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="Name" class="form-label">שם:</label>
+                                    <input type="text" class="form-control" placeholder="שם השולח:" id="Name" name="name" required>
+                                </div>
+                                <div class="mb-3" id="mailInput">
+                                    <label for="Mail" class="form-label">אימייל:</label>
+                                    <input type="email" class="form-control" placeholder="אימייל" id="Mail" name="email" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="Message" class="form-label">הודעה:</label>
+                                    <textarea class="form-control" placeholder="תוכן ההודעה:" id="Message" name="message" rows="4" required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <button type="submit" class="btn btn-warning" id="subCubeMas">שליחה</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal fade" id="thankYouModal" tabindex="-1" role="dialog" aria-labelledby="thankYouModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="thankYouModalLabel">תודה רבה!</h5>
+                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>ההודעה נשלחה בהצלחה. תודה רבה על פנייתך!</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">סגור</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- דיב חדש לתמונה ולטקסט -->
+            <div class="col-md-8 d-flex align-items-center mt-3 mt-md-0">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="~/images/img/protrait.webp" alt="תמונת בעל האתר" class="img-fluid">
+                    </div>
+                    <div class="col-md-8">
+                        <h2>אודות האתר:</h2>
+                        <p class="Pabout">ברוכים הבאים לאתר המתכונים שלנו! כאן תמצאו מגוון רחב של מתכונים טעימים ובריאים לכל המשפחה.</p>
+                        <p class="Pabout">מטרת האתר היא לספק לכם השראה קולינרית ולסייע לכם להכין מנות מגוונות ומיוחדות בקלות ובכיף.</p>
+                        <p class="Pabout">הרעיון להקים את האתר הגיע מתוך אהבה לבישול ורצון לחלוק את הידע והניסיון שלנו עם כל מי שאוהב לבשל ולאכול טוב.</p>
+                        <p class="Pabout">נשמח לשמוע את דעתכם ולקרוא את התגובות שלכם על המתכונים שלנו!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" id="likeAndShareRow">
+            <div class="col-12">
+                <div id="iconDiv">
+                    <div class="sketchy">
+                        <h2 id="iconDivHeder">אהבתם שתפו עם סמלים ואופציה לשיתופים</h2>
+                        <div class="icons-container">
+                            <img class="colorful-icon" src="/icons/facebook.png" onclick="shareFacebook()" alt="שתף בפייסבוק" />
+                            <img class="colorful-icon" src="/icons/whatsapp.png" onclick="shareWhatsApp()" alt="שתף בוואטסאפ" />
+                            <img class="colorful-icon" src="/icons/gmail.png" alt="שתף במייל" onclick="openEmailModal()" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="video-container">
+
+			<iframe width="560" height="315"
+					src="https://www.youtube.com/embed/u6UibfV4D2o?autoplay=1&mute=1&controls=1&showinfo=0&loop=1&playlist=u6UibfV4D2o"
+					title="YouTube video player"
+					frameborder="0"
+					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+					referrerpolicy="strict-origin-when-cross-origin"
+					allowfullscreen>
+			</iframe>
+
+        </div>
+
+        <!-- חלון מוקפץ לשליחת איימיל -->
+        <div class="modal-overlay" id="modalOverlay"></div>
+        <div class="modal" id="emailModal">
+            <form id="FormDesignEmailRes" >
+                <button class="modal-close" id="modalClose" onclick="closeEmailModal()" aria-label="סגור חלון">X</button> <!-- כפתור לסגירת החלון -->
+                <h2>שלח באמצעות אימייל</h2>
+                <label for="emailRecipient">נמען:</label>
+                <input type="email" id="emailRecipient" class="form-style-EmailRes" required /><br>
+
+                <label for="emailSubject">נושא:</label>
+                <input type="text" id="emailSubject" class="form-style-EmailRes" required /><br>
+
+                <label for="emailBody">תוכן:</label>
+                <textarea id="emailBody" class="form-style-EmailRes" rows="4" required>Here's an awesome website: https://localhost:7160</textarea><br>
+
+                <button type="button" class="btnEmail" onclick="sendEmail()">שלח</button> <!-- כפתור לשליחה -->
+            </form>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            let selectedIngredients = []; // מערך לשמירת ה-ID והשמות של הרכיבים שנבחרו
+
+            // הצגת הודעה ראשונית
+            $('#recipes-display').html('<p id="PRecipeInfo">אנא בחר רכיבים לחיפוש מתכונים.</p>');
+
+            // בקשת GET לקבלת רשימת הרכיבים מהשרת
+            $.getJSON('/api/ingredients', function (data) {
+                var buttons = data.map(function (ingredient) {
+                    //  console.log("Ingredient:", ingredient); // הדפסת מידע על כל רכיב
+                    return `<button type="button" data-id="${ingredient.id}" data-name="${ingredient.name}" class="btn btn-outline-dark ingredient-btn" style="display: inline-grid; color:white; border:2px solid wheat;" > 
+                            <img src="${ingredient.icon}" style="width: 24px; height: 24px; filter: brightness(0) invert(1);" alt="${ingredient.name}"> ${ingredient.name}</button>`; // הוספת כיתות Bootstrap
+                }).join('');
+                $('#ingredients').html(buttons);
+            });
+
+            // הוספת אירוע ללחיצה על כפתור הרכיבים
+            $('#ingredients').on('click', '.ingredient-btn', function () {
+                var ingredientId = $(this).data('id');
+                var ingredientName = $(this).data('name');
+                const index = selectedIngredients.findIndex(ing => ing.id === ingredientId);
+                if (index > -1) {
+                    selectedIngredients.splice(index, 1);
+                    $(this).removeClass('selected');
+                } else {
+                    selectedIngredients.push({ id: ingredientId, name: ingredientName });
+                    $(this).addClass('selected');
+                }
+                updateSelectedIngredientsDisplay();
+                fetchRecipesByIngredients(selectedIngredients.map(ing => ing.id));
+            });
+
+            // עדכון התצוגה של הרכיבים שנבחרו
+            function updateSelectedIngredientsDisplay() {
+                var ingredientsHtml = selectedIngredients.map(ing =>
+                    `<span class="selected-ingredient">
+                        <button type="button" class="remove-ingredient btn btn-primary" data-id="${ing.id}" aria-label="הסר ${ing.name}">x</button> ${ing.name}
+                    </span>`
+                ).join(' ');
+
+                $('#selected-ingredients-display').html(ingredientsHtml.length > 0 ? ingredientsHtml : 'אין רכיבים נבחרים');
+            }
+
+            // הסרת רכיב דרך כפתור ה-X
+            $('#selected-ingredients-display').on('click', '.remove-ingredient', function () {
+                var idToRemove = $(this).data('id');
+                selectedIngredients = selectedIngredients.filter(ing => ing.id !== idToRemove);
+                updateSelectedIngredientsDisplay();
+                fetchRecipesByIngredients(selectedIngredients.map(ing => ing.id));
+                $('#ingredients').find(`[data-id="${idToRemove}"]`).removeClass('selected');
+                document.getElementById('recipes-display-anchor').scrollIntoView({ behavior: 'smooth' });
+            });
+
+            //הצגת המתכונים ומעבר לדף מתכונים
+            function fetchRecipesByIngredients(ingredientIds) {
+                if (ingredientIds.length === 0) {
+                    $('#recipes-display').html('<p>אנא בחר רכיבים לחיפוש מתכונים.</p>');
+                    return;
+                }
+                $.ajax({
+                    url: `/api/findrecipes`,
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(ingredientIds),
+                    success: function (recipes) {
+                       // console.log("מתכונים שהתקבלו:", recipes); // הדפסה לקונסול של כל המתכונים שהתקבלו
+                        if (recipes.length > 0) {
+                            var recipesHtml = recipes.map(function (recipe) {
+                                return `<div id="blurred-div" style=" border:double; ">
+                                        <h3 class="RcpdtlsHomePage">${recipe.recipeName}</h3>
+                                            <p class="RcpdtlsHomePage">זמן הכנה: ${recipe.preparationTime}</p>
+                                            <p class="RcpdtlsHomePage">רמת קושי: ${recipe.difficultyLevel}</p>
+                                            <img src="${recipe.imageRecipe}" alt="${recipe.recipeName}" style="max-width: 100%; height: auto;">
+                                           <a href="#" class="recipe-link" style="background-color: #ffce67; color: black;" onclick="countEntranceAndRedirect(${recipe.recipeID}, this)">לפרטי המתכון</a>
+                                    </div>`;
+                            }).join('');
+                            $('#recipes-display').html(recipesHtml);
+                            document.getElementById('recipes-display-anchor').scrollIntoView({ behavior: 'smooth' });
+                        } else {
+                            $('#recipes-display').html('<p>לא נמצאו מתכונים שמכילים את הרכיבים הנבחרים.</p>');
+                        }
+                    },
+                    error: function (error) {
+                     //   console.error('Error fetching recipes:', error);
+                        $('#recipes-display').html('<p>התרחשה שגיאה בעת טעינת המתכונים.</p>');
+                    }
+                });
+            }
+
+            //פונקציה לשליחת איימיל"כתבו לי" בדף
+            $('#contactForm').submit(function(e) {
+                e.preventDefault(); // מונע הגשה רגילה של הטופס
+                var formData = $(this).serialize(); // איסוף נתוני הטופס
+                     console.log(formData); 
+                // שליחת בקשת POST עם נתוני הטופס לצד שרת
+                $.ajax({
+                    type: 'POST',
+                    url: '/RecipeWeb/SubmitForm', 
+                    data: formData,
+                    success: function(response) {
+                        //  console.log('Success:', response); 
+                        //  alert(response.message ); 
+                        $('#thankYouModal').modal('show'); 
+                        $('#contactForm')[0].reset(); // איפוס הטופס לאחר שליחתו בהצלחה
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                        alert('There was a problem with your submission.');
+                    }
+                });
+                // מעבר לעמוד הנוכחי כדי לא לרענן את הדף
+                return false;
+            });
+        });
+
+        //פונקציה לספירת כניסות למתכון
+        function countEntranceAndRedirect(recipeId, element) {
+            $.ajax({
+                url: '/RecipeWeb/CountEntrances/' + recipeId,
+                type: 'POST',
+                success: function () {
+                    window.location.href = '/recipe/' + recipeId;
+                },
+                error: function () {
+                    window.location.href = '/recipe/' + recipeId;
+                }
+            });
+        }
+
+        /*פוקציה לשיתוף בואטזאופ*/
+        function shareWhatsApp() {
+            const text = "Check out this awesome website: https://localhost:7160";//לשנות לטקסט קצת יותר אטרקטיבי
+            console.log("Original text:", text); // מדפיס את הטקסט 
+
+            const encodedText = encodeURIComponent(text);
+            console.log("Encoded text:", encodedText); // מדפיס את הטקסט מקודד
+
+            const whatsappUrl = `https://wa.me/?text=${encodedText}`;
+            console.log("WhatsApp URL:", whatsappUrl); // מדפיס את הURL 
+
+            window.open(whatsappUrl, "_blank");//בלאנק פיתחה בדף חדש את עמוד השיתוף
+            console.log("WhatsApp sharing window opened."); // מאשר שנפתח
+        }
+
+        /* פונקציה לשיתוף בפייסבוק */
+        function shareFacebook() {
+            const urlToShare = "https://localhost:7160"; // קישור לאתר
+            console.log("URL to share:", urlToShare); 
+
+            const quote = encodeURIComponent("Check out this awesome website!");
+            console.log("Encoded quote:", quote); // מדפיס את הטקסט מקודד
+
+            const encodedUrlToShare = encodeURIComponent(urlToShare); // 
+            console.log("Encoded URL to share:", encodedUrlToShare); // מדפיס את הטקסט מקודד
+
+            const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrlToShare}&quote=${quote}`;
+            console.log("Facebook share URL:", facebookUrl); // מדפיס את ה-URL לפייסבוק
+
+            window.open(facebookUrl, "_blank"); // בלאנק פתיחה בדף חדש את עמוד השיתוף
+            console.log("Facebook sharing window opened."); // מאשר  שנפתח
+        }
+
+        /* פונקציה לשיתוף במייל */
+
+        // פונקציה לפתיחת חלון מוקפץ
+        function openEmailModal() {
+            document.getElementById("modalOverlay").style.display = "block";
+            document.getElementById("emailModal").style.display = "block";
+        }
+
+        // פונקציה לסגירת חלון מוקפץ
+        function closeEmailModal() {
+            document.getElementById("modalOverlay").style.display = "none";
+            document.getElementById("emailModal").style.display = "none";
+        }
+
+        //פונקציה ליצירת קישור MAILTO
+        function sendEmail() {
+            const recipient = document.getElementById("emailRecipient").value;
+            const subject = encodeURIComponent(document.getElementById("emailSubject").value);
+            const body = encodeURIComponent(document.getElementById("emailBody").value);
+
+            const mailtoUrl = `mailto:${recipient}?subject=${subject}&body=${body}`;
+            console.log("Mailto URL:", mailtoUrl); // מעביר את URL לMAILTO:"
+
+            window.open(mailtoUrl, "_blank"); // בלאנק פתיחה בדף חדש את עמוד השיתוף
+            closeEmailModal(); // סוגר את החלון המוקפץ
+        }
+    </script>
+</body>
+</html>

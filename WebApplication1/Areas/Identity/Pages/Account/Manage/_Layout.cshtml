@@ -1,0 +1,41 @@
+﻿@inject UserManager<WebApplication1User> UserManager
+
+@{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout !=  null)
+    {
+        Layout = parentLayout.ToString();
+    }
+    else
+    {
+        Layout = "/Areas/Identity/Pages/_Layout.cshtml";
+    }
+}
+
+<h1>:ברוך הבא @UserManager.GetUserName(User)</h1>
+
+<div>
+    <h2>פרופיל המשתמש:</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-3">
+            <partial name="_ManageNav" />
+        </div>
+        <div class="col-md-9">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}
+
+<style>
+    h1,h2{
+        font-family: "Amatic SC", sans-serif;
+        font-weight: 900;
+        font-style: normal;
+        color: #ffce67;
+        font-size: 3em; /* גודל הכותרת יהיה 3 פעמים יותר מהגודל הרגיל */
+    }
+</style>

@@ -1,0 +1,163 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מחשבון BMI</title>
+
+ 
+       <link rel="stylesheet" href="/css/BMIcalculator.css" />
+
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar-left">
+            <h3>פרסומות</h3>
+            <!-- כאן תוכל להוסיף תוכן פרסומות בעתיד -->
+        </div>
+
+        <div class="main-content">
+            <h1>מחשבון BMI</h1>
+            <h2>מדד ה-BMI: מה זה ולמה זה חשוב?</h2>
+            <p>מדד ה-BMI (Body Mass Index) הוא כלי שמודד את מסת הגוף ועוזר לנו להבין אם אנחנו במשקל תקין, סובלים מעודף משקל או תת-משקל. הוא לוקח בחשבון את הגובה והמשקל שלנו, ומשקלל אותם בנוסחה פשוטה: המשקל (בק"ג) חלקי הגובה (במטרים) בריבוע.</p>
+            <h2>למה זה חשוב?</h2>
+            <p>BMI גבוה מעלה את הסיכון למחלות לב, כלי דם וסוכרת. לכן, חשוב לעקוב אחר המדד הזה כדי לשמור על הבריאות שלנו.</p>
+            <h2>כמה דגשים:</h2>
+            <p>
+                ⊗ השימוש במחשבון מיועד לבני 18 ומעלה: לילדים ובני נוער יש לעקוב אחר עקומות גדילה מתאימות.<br>
+                ⊗ התייעצו עם הרופא שלכם: התוצאות הן כלליות ולא מחליפות ייעוץ רפואי אישי.
+            </p>
+            <h2>אז איך מתחילים? </h2>
+            <p>פשוט מלאו את הנתונים שלכם למטה וגלו מה ה-BMI שלכם!</p>
+
+            <form method="post" id="FormRes" class="form-inline" onsubmit="calculateBMI(event)">
+                <div class="form-group mb-2">
+                    <label for="weight" class="sr-only">משקל (ק"ג)</label>
+                    <input type="range" min="30" max="150" step="0.1" class="slider" id="weight" name="weight" oninput="document.getElementById('weightOutput').value = this.value" required>
+                    <output class="outputRes" id="weightOutput">90 ק"ג</output>
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                    <label for="height" class="sr-only">גובה (ס"מ)</label>
+                    <input type="range" min="100" max="220" step="0.1" class="slider" id="height" name="height" oninput="document.getElementById('heightOutput').value = this.value" required>
+                    <output class="outputRes" id="heightOutput">170 ס"מ</output>
+                </div>
+                <div class="form-group mb-2">
+                    <label for="age" class="sr-only">גיל</label>
+                    <input type="range" min="18" max="100" class="slider" id="age" name="age" oninput="document.getElementById('ageOutput').value = this.value" required>
+                    <output class="outputRes" id="ageOutput">25 שנים</output>
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                    <label class="sr-only">מגדר</label>
+                    <div class="btn-group btn-group-toggle" id="genderDiv" data-toggle="buttons">
+                        <label class="btn btn-primary" id="inpGenderMale" onclick="document.getElementById('gender').value = 'male'">
+                            <input type="radio" name="gender" id="genderMale" value="male"> גבר
+                        </label>
+                        <label class="btn btn-danger inpGender" id="inpGenderFemale" onclick="document.getElementById('gender').value = 'female'">
+                            <input type="radio" name="gender" id="genderFemale" value="female"> אישה
+                        </label>
+                    </div>
+                    <input type="hidden" id="gender" name="gender" required>
+                </div>
+                <button type="submit" class="btn btn-warning mb-2">חשב BMI</button>
+            </form>
+
+            <div id="ResultBMIdiv" class="alert alert-info mt-4">
+                <strong>תוצאת ה-BMI שלך:</strong> <span id="bmi-value"></span><br>
+                גיל: <span id="bmi-age"></span><br>
+                גובה: <span id="bmi-height"></span> ס"מ<br>
+                מין: <span id="bmi-gender"></span><br>
+
+                <span id="bmi-description"></span>
+            </div>
+        </div>
+           <div class="sidebar-right">
+            @Html.Partial("SidebarRightPartial")
+        </div>
+        @* <div class="sidebar-right">
+            <div class="info-box" id="recipes">
+                <h3>מתכונים</h3>
+                <a href="#"><img src="/path/to/recipe1.jpg" alt="Recipe 1"></a>
+                <!-- תכנות להחלפת התמונות כל 15 שניות -->
+            </div>
+
+            <div class="info-box">
+                <h3>הרשמה לניוזילטר</h3>
+                <form>
+                    <input id="InputNews" type="email" placeholder="הכנס את המייל שלך">
+                    <button id="btnNews" class="btn btn-warning" type="submit">הרשם</button>
+                </form>
+            </div>
+
+            <div class="info-box">
+                <h3>עמוד מועדפים</h3>
+                <p>כאן יוצגו המועדפים שלך.</p>
+            </div>
+
+            <div class="info-box">
+                <h3>מתכונים מומלצים</h3>
+                <ul>
+                    <li><a href="#">מתכון 1</a></li>
+                    <li><a href="#">מתכון 2</a></li>
+                    <li><a href="#">מתכון 3</a></li>
+                </ul>
+            </div>
+        </div>*@
+
+    </div>
+
+    <script>
+        function calculateBMI(event) {
+            event.preventDefault();
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value) / 100; // להמיר לגובה במטרים
+            const age = document.getElementById('age').value;
+            const gender = document.getElementById('gender').value;
+
+            const bmi = (weight / (height * height)).toFixed(1);
+            document.getElementById('bmi-value').innerText = bmi;
+            document.getElementById('bmi-age').innerText = age;
+            document.getElementById('bmi-gender').innerText = (gender === 'male' ? 'גבר' : 'אישה');
+            document.getElementById('bmi-height').innerText = height;
+            getBMIDescription(bmi);
+            document.getElementById('ResultBMIdiv').style.display = 'block';
+            document.getElementById('ResultBMIdiv').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function getBMIDescription(bmi) {
+            const descriptionElement = document.getElementById('bmi-description');
+            let descriptionText;
+            let className;
+
+            if (bmi < 18.5) {
+                descriptionText = "תת-משקל: מומלץ לפנות לרופא או דיאטנית כדי לבדוק את הסיבות האפשריות ולשקול תוכנית תזונה מתאימה.";
+                className = "underweight";
+            } else if (bmi >= 18.5 && bmi < 24.9) {
+                descriptionText = "משקל תקין: המשך לשמור על אורח חיים בריא ותזונה מאוזנת.";
+                className = "normal";
+            } else if (bmi >= 25 && bmi < 29.9) {
+                descriptionText = "עודף משקל: מומלץ לשקול שינוי בהרגלי התזונה והפעילות הגופנית כדי לשפר את הבריאות.";
+                className = "overweight";
+            } else if (bmi >= 30 && bmi < 34.9) {
+                descriptionText = "השמנת יתר דרגה 1: מומלץ להתייעץ עם רופא או דיאטנית לגבי דרכים להפחתת משקל.";
+                className = "obesity1";
+            } else if (bmi >= 35 && bmi < 39.9) {
+                descriptionText = "השמנת יתר דרגה 2: מומלץ לפנות לרופא ולשקול תוכנית בריאותית להפחתת משקל.";
+                className = "obesity2";
+            } else {
+                descriptionText = "השמנת יתר חמורה: חשוב לפנות לרופא ולקבל ייעוץ בריאותי מקצועי.";
+                className = "severe-obesity";
+            }
+
+            descriptionElement.innerHTML = descriptionText;
+            descriptionElement.className = className; // הוספת הקלאס המתאים
+        }
+
+        window.onload = function () {
+            document.getElementById('ResultBMIdiv').style.display = 'none';
+        };
+    </script>
+
+
+</body>
+</html>

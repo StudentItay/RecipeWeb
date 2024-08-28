@@ -1,0 +1,288 @@
+﻿c
+
+ <!DOCTYPE html>
+<html dir="rtl" lang="he">
+    <head>
+        <title>דף מתכונים מפורט</title>
+         <link rel="stylesheet" href="/css/RecipeDetails.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    </head>
+    <body>
+  <div class="container">
+        <div class="content">
+    <h2>@Model.RecipeName</h2>
+           
+       @if (User.Identity != null && User.Identity.IsAuthenticated){
+
+        <button id="addToFavoritesBtn" class="btn btn-warning">
+            <i class="fa fa-star"></i>הוסף למועדפים
+        </button>
+            }
+            else
+            {
+                <p id="pFav">כדי להוסיף למועדפים את המתכונים אהובים עליכם, אנא <a asp-area="Identity" asp-page="/Account/Register">הירשמו</a> לאתר.</p>
+            }
+
+    <div class="meat-section">
+        <ul style="display:flex;">
+            <li>זמן הכנה: @Model.PreparationTime</li>
+            <li>רמת קושי: @Model.DifficultyLevel</li>
+        </ul>
+    </div>
+
+    <div class="meat-section">
+    <h3>רכיבים:</h3>
+    <ul>
+        @foreach (var ingredient in Model.Ingredients)
+        {
+            <li>@ingredient.IngredientName - @ingredient.Quantity</li>
+        }
+    </ul>
+    </div>
+
+    <div class="meat-section">
+        <h2> קטגוריה: @Model.Category</h2>
+                <ul class="recipe-details">
+				<li> <b>אופן ההכנה:</b> @Model.Description</li>
+            <br> 
+            <h2>מידע נוסף: @Model.Info</h2>
+          
+            
+         
+            @*<li><img src="@Model.ImageRecipe" alt="@Model.RecipeName" id="RecipeImg" /></li> *@
+        </ul >
+    </div>
+        </div>
+        <div class="sidebar">
+            <li><img src="@Model.ImageRecipe" alt="@Model.RecipeName"/></li>
+        </div>
+
+
+  </div>
+
+
+
+    @{
+        string returnUrl = Context.Request.Path + Context.Request.QueryString;
+    }
+    @if (User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        <div id="CommentForm">
+            <form id="FormComment" asp-controller="RecipeWeb" asp-action="AddComment" method="post">
+                <h1 for="Hedar">ספר לנו מה חשבת על המתכון!</h1>
+                <input type="hidden" id="RecipeId" name="RecipeId" value="" />
+
+                <div class="form-group">
+                    <label for="UserName">שם משתמש:</label>
+                    <input type="text" class="form-control" id="UserName" name="UserName" placeholder="שם משתמש" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="Email">אימייל:</label>
+                    <input type="email" class="form-control" id="Email" name="Email" placeholder="אימייל" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="Rating">דירוג בכוכבים:</label>
+                    <div class="rating">
+                        <span class="star" data-rating="1">&#9733;</span>
+                        <span class="star" data-rating="2">&#9733;</span>
+                        <span class="star" data-rating="3">&#9733;</span>
+                        <span class="star" data-rating="4">&#9733;</span>
+                        <span class="star" data-rating="5">&#9733;</span>
+                        <input type="hidden" name="Rating" class="rating-value" value="1">
+                    </div>
+                    <div id="selectedRating"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="CommentText">התגובה שלך:</label>
+                    <textarea class="form-control" id="CommentText" name="CommentText" rows="4" placeholder="הוסף תגובה..." required></textarea>
+                </div>
+                <br />
+                <button type="submit" class="btn btn-warning">שלח תגובה</button>
+            </form>
+        </div>
+    }
+    else
+    {
+        <p>כדי להשאיר תגובה ולהגיב על המתכונים, אנא <a asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@returnUrl">התחבר</a> או <a asp-area="Identity" asp-page="/Account/Register" asp-route-returnUrl="@returnUrl">הירשם</a> לאתר.</p>
+    }
+
+
+
+    @*הצגת התגובות*@
+    <div id="CustomerComments" style="margin-bottom:30%;">
+  
+    </div>
+	
+    
+
+    </body>
+    </html>
+
+<script>
+
+    //הוספה למועדפים
+    $(document).ready(function () {
+        var url = window.location.pathname;
+        var recipeId = url.substring(url.lastIndexOf('/') + 1);
+
+        // קריאה לשרת לבדוק אם המתכון כבר במועדפים
+        $.ajax({
+            url: '/RecipeWeb/IsRecipeInFavorites/' + recipeId,
+            type: 'GET',
+            success: function (response) {
+                if (response.isFavorite) {
+                    // שינוי צבע הכפתור אם המתכון כבר במועדפים
+                    $('#addToFavoritesBtn').removeClass('btn-warning').addClass('btn-success');
+                    $('#addToFavoritesBtn').text('כבר במועדפים');
+                } else {
+                    // ודא שהכפתור נשאר בצבע המקורי אם המתכון לא במועדפים
+                    $('#addToFavoritesBtn').removeClass('btn-success').addClass('btn-warning');
+                    $('#addToFavoritesBtn').text('הוסף למועדפים');
+                }
+            },
+            error: function () {
+                console.error('Error fetching favorite status.');
+            }
+        });
+
+  $('#addToFavoritesBtn').click(function () {
+
+       
+            var token = $('input[name="__RequestVerificationToken"]').val();
+
+            console.log('Recipe ID:', recipeId);
+            console.log('Request Verification Token:', token);
+
+            $.ajax({
+                url: '/RecipeWeb/AddToFavorites/' + recipeId,
+                type: 'POST',
+                headers: {
+                    'RequestVerificationToken': token
+                },
+                success: function (response) {
+                    if (response.success) {
+                        alert('המתכון נוסף למועדפים בהצלחה');
+                        $('#addToFavoritesBtn').removeClass('btn-warning').addClass('btn-success');
+                        $('#addToFavoritesBtn').text('כבר במועדפים');
+                    } else if (response.alreadyInFavorites) {
+                        alert('המתכון כבר במועדפים');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status === 401) {
+                        window.location.href = '/Identity/Account/Register'; // הפניה לדף ההרשמה
+                    } else {
+                        console.error('Error Status:', status);
+                        console.error('Error:', error);
+                        console.error('XHR:', xhr);
+                       
+                    }
+                }
+            });
+        });
+    });
+
+    //סקריפט לכוכבים בדירוג
+    document.addEventListener('DOMContentLoaded', function () {
+        const stars = document.querySelectorAll('.star');
+        const ratingValue = document.querySelector('.rating-value');
+        const selectedRating = document.getElementById('selectedRating');
+
+        stars.forEach(star => {
+            star.addEventListener('mouseover', () => {
+                const rating = star.getAttribute('data-rating');
+                updateStars(rating);
+            });
+
+            star.addEventListener('mouseout', () => {
+                const currentRating = ratingValue.value;
+                updateStars(currentRating);
+            });
+
+            star.addEventListener('click', () => {
+                const rating = star.getAttribute('data-rating');
+                ratingValue.value = rating;
+                updateStars(rating);
+            });
+        });
+
+        function updateStars(rating) {
+            stars.forEach(innerStar => {
+                if (innerStar.getAttribute('data-rating') <= rating) {
+                    innerStar.classList.add('selected');
+                } else {
+                    innerStar.classList.remove('selected');
+                }
+            });
+
+
+           //selectedRating.textContent = `דירוג: ${rating}`;
+        }
+    });
+
+
+    $(document).ready(function () {
+        var currentUrl = window.location.href;
+        var urlParts = currentUrl.split('/');
+        var recipeId = urlParts[urlParts.length - 1];
+        console.log("Recipe ID: " + recipeId); // Print Recipe ID to console
+        $.ajax({
+            url: `/api/GetCommentstoRecipes`,
+            method: "GET",
+            data: { recipeId: recipeId },
+            success: function (data) {
+                console.log("Comments data received:", data); // Print received data to console
+                data.forEach(comment => {
+                    console.log("Processing comment:", comment); // Print each comment being processed
+
+                    var commentHtml = '<div  class="DivComment text-justify darker  mt-4 float-right data-comment-id="' + comment.commentId + '">';
+
+                    commentHtml += '<p>שם המגיב:' + comment.userName + '</p>';
+                    commentHtml += '<p> תוכן התגובה:' + comment.commentText + '</p>';
+
+                    // דירוג הכוכבים
+                    commentHtml += '<p>דירוג: <span>';
+                    for (var j = 0; j < comment.rating; j++) {
+                        commentHtml += ' <span id="starating">&#9733; </span> ';
+                       
+                    }
+                    commentHtml += '</span></p>';
+                    console.log("rating " + comment.rating);
+                    commentHtml += '<p>' + comment.createdAt + '</p>';
+                    commentHtml += '</div>';
+
+                    $("#CustomerComments").append(commentHtml);
+                });
+            },
+            error: function (error) {
+                console.log("שגיאה בקבלת התגובות: ", error);
+            }
+        });
+    });
+
+
+
+    $(document).ready(function () {
+        var currentUrl = window.location.href;
+        var urlParts = currentUrl.split('/');
+        var recipeId = urlParts[urlParts.length - 1];
+
+        $('#RecipeId').val(recipeId); // שימוש ב-jQuery כדי להגדיר את הערך
+        console.log('Recipe ID:', recipeId);
+    });
+
+
+    $(document).ready(function () {
+        // Extract recipeId from the URL
+        var url = window.location.href;
+        var recipeId = url.substring(url.lastIndexOf('/') + 1);
+
+        // Set the value of the hidden input field
+        $('#recipeIdInput').val(recipeId);
+    });
+ 
+</script>

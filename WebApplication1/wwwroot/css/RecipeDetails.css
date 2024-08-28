@@ -1,0 +1,256 @@
+﻿body {
+    background-image: url('/images/background/BackGroundBtn.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.meat-section {
+    padding: 20px;
+    background: rgba(0,0,,0.7);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin-bottom: 10%;
+}
+
+    .meat-section h3, h2 {
+        color: white;
+        font-family: "Amatic SC", sans-serif;
+        font-weight: bold;
+        color: #ffce67;
+    }
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+    ul li {
+        font-family: "Amatic SC", sans-serif;
+        background: rgba(0,0,,0.7); 
+        background-size: 15px;
+        padding-left: 25px;
+        margin-bottom: 10px;
+        color: white;
+        font-size: xx-large;
+    }
+
+#RecipeImg {
+    margin-right: 32%;
+    width: 50%;
+    border-radius: 10px;
+    border: 2px solid #000;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 20px;
+}
+
+.content {
+    flex: 1;
+    margin-right: 10%;
+}
+
+.sidebar {
+    flex: 1;
+    margin-left: 1%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    .sidebar img {
+        margin-right: 20%;
+        margin-top: 50%;
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 50%;
+    }
+
+
+@@media screen and (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .content {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .sidebar {
+        margin-left: 0;
+    }
+
+    ul li {
+        font-size: large;
+    }
+
+    .sidebar img {
+        width: 80%;
+        margin-top: 20px;
+        margin-bottom: 50%;
+        align-self: flex-start 
+    }
+}
+
+
+@@media (max-width: 480px) {
+    ul li {
+        font-size: medium; 
+
+    .sidebar img {
+        width: 80%;
+        margin-right: 4%;
+        margin-top: 20px;
+        margin-bottom: 50%;
+        align-self: flex-end;
+    }
+}
+
+.rating {
+    display: flex;
+    cursor: pointer;
+}
+
+.star {
+    font-size: 2em;
+    padding: 0.1em;
+    transition: color 0.3s;
+}
+
+    .star:hover {
+        color: #ffb51b;
+    }
+
+.selected {
+    color: #ffb51b;
+}
+
+#starating {
+    color: #ffb51b;
+}
+
+#FormComment {
+    width: 75%;
+    margin-bottom: 10%;
+    border: 2px solid black;
+
+    padding: 3%;
+    margin-right: 20%;
+    position: relative;
+}
+
+    #FormComment::before,
+    #FormComment::after {
+        content: "";
+        position: absolute;
+        border: 2px solid black;
+        width: calc(100% - 20px);
+        height: calc(100% - 20px);
+        pointer-events: none; 
+    }
+
+    #FormComment::before {
+        top: -10px;
+        left: -10px; 
+        border-width: 2px 0 0 2px;
+
+    }
+
+    #FormComment::after {
+        bottom: -10px;
+        right: -10px; 
+        border-width: 0 2px 2px 0; 
+
+    }
+
+@@media (max-width: 480px), (max-width: 768px) {
+    #FormComment {
+        width: 100%; 
+        border: 2px solid black;
+        border-radius: 5%;
+        padding: 3%;
+        margin-right: 0; 
+        margin-bottom: 50%; 
+    }
+}
+
+label {
+    font-family: "Amatic SC", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    color: #ffb51b;
+    font-size: 2em;
+}
+
+h1 {
+    font-family: "Amatic SC", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    color: #ffb51b;
+}
+
+p {
+    font-family: "Amatic SC", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: xx-large;
+    color: white;
+}
+
+#pFav {
+    font-family: "Amatic SC", sans-serif;
+    font-size: x-large;
+    color: white;
+}
+
+
+
+.DivComment {
+    border: 2px solid black;
+    padding: 3%;
+    margin-left: 8%;
+    padding-right: 15%;
+    padding-left: 15%;
+    margin-bottom: 5%;
+    position: relative;
+}
+
+    .DivComment::before,
+    .DivComment::after {
+        content: "";
+        position: absolute;
+        border: 2px solid black;
+        width: calc(100% - 20px);
+        height: calc(100% - 20px);
+        pointer-events: none; 
+    }
+
+    .DivComment::before {
+        top: -10px; 
+        left: -10px; 
+        border-width: 2px 0 0 2px; 
+    }
+
+    .DivComment::after {
+        bottom: -10px; 
+        right: -10px; 
+        border-width: 0 2px 2px 0; 
+    }
+
+#CustomerComments {
+    margin-bottom: 30%;
+    margin-bottom: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+}
+
+

@@ -1,0 +1,58 @@
+﻿body {
+    background-image: url('/images/background/BackGroundBtn.jpg');
+    background-size: cover;
+}
+
+.container {
+    margin-top: 60px; 
+}
+
+#blurred-div {
+    background-color: rgba(255, 255, 255, 0.5); 
+    backdrop-filter: blur(1px);
+    padding: 20px;
+    margin: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    width: 100%; 
+    max-width: 300px; 
+}
+
+.RcpdtlsHomePage {
+    color: white;
+    font-family: "Amatic SC", sans-serif;
+    font-weight: bold;
+    font-style: normal;
+    font-size: xx-large;
+}
+
+.recipe-link {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #ffce67;
+    color: black;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.btn-danger {
+    margin-top: 10px;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.col-md-4 {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#ConDivFav {
+    margin-bottom: 28%;
+}

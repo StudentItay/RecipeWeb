@@ -1,0 +1,166 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מחשבון BMI</title>
+    <link rel="stylesheet"  href="/css/Calories.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar-left">
+            <h3>פרסומות</h3>
+            <!-- כאן תוכל להוסיף תוכן פרסומות בעתיד -->
+        </div>
+
+        <div class="main-content">
+            <h1>מחשבון קלוריות</h1>
+            <h2>מהו חישוב קלוריות ולמה הוא חשוב?</h2>
+            <p>חישוב קלוריות הוא כלי שמאפשר לנו להבין כמה אנרגיה אנחנו צורכים מהאוכל שאנחנו אוכלים. הוא לוקח בחשבון את הגיל, המין, המשקל, הגובה ורמת הפעילות שלנו.</p>
+            <h2>למה זה חשוב?</h2>
+            <p>הבנת הצריכה הקלורית היומית יכולה לעזור לנו לשמור על משקל תקין, לשפר את הביצועים הספורטיביים שלנו ולשפר את הבריאות הכללית שלנו.</p>
+            <h2>כמה דגשים:</h2>
+            <p>
+                ⊗ השימוש במחשבון מיועד לבני 18 ומעלה: לילדים ובני נוער יש לעקוב אחר המלצות תזונה מתאימות.<br>
+                ⊗ התייעצו עם דיאטנית או הרופא שלכם: התוצאות הן כלליות ולא מחליפות ייעוץ תזונתי אישי.
+            </p>
+            <h2>אז איך מתחילים? </h2>
+            <p>פשוט מלאו את הנתונים שלכם למטה וגלו כמה קלוריות אתם צריכים ביום!</p>
+
+            <form method="post" id="FormRes" class="form-inline" onsubmit="calculateCalories(event)">
+                <div class="form-group mb-2">
+                    <label for="weight" class="sr-only">משקל (ק"ג)</label>
+                    <input type="range" min="30" max="150" step="0.1" class="slider" id="weight" name="weight" oninput="document.getElementById('weightOutput').value = this.value" required>
+                    <output class="outputRes" id="weightOutput">90 ק"ג</output>
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                    <label for="height" class="sr-only">גובה (ס"מ)</label>
+                    <input type="range" min="100" max="220" step="0.1" class="slider" id="height" name="height" oninput="document.getElementById('heightOutput').value = this.value" required>
+                    <output class="outputRes" id="heightOutput">170 ס"מ</output>
+                </div>
+                <div class="form-group mb-2">
+                    <label for="age" class="sr-only">גיל</label>
+                    <input type="range" min="18" max="100" class="slider" id="age" name="age" oninput="document.getElementById('ageOutput').value = this.value" required>
+                    <output class="outputRes" id="ageOutput">25 שנים</output>
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                    <label class="sr-only">מגדר</label>
+                    <div class="btn-group btn-group-toggle" id="genderDiv" data-toggle="buttons">
+                        <label class="btn btn-primary" id="inpGenderMale" onclick="document.getElementById('gender').value = 'male'">
+                            <input type="radio" name="gender" id="genderMale" value="male"> גבר
+                        </label>
+                        <label class="btn btn-danger inpGender" id="inpGenderFemale" onclick="document.getElementById('gender').value = 'female'">
+                            <input type="radio" name="gender" id="genderFemale" value="female"> אישה
+                        </label>
+                    </div>
+                    <input type="hidden" id="gender" name="gender" required>
+                </div>
+                <div class="form-group mb-2">
+                    <label for="activityLevel" class="sr-only">רמת פעילות</label>
+                    <select class="form-control" id="activityLevel" name="activityLevel" required>
+                        <option value="" disabled selected>בחרו רמת פעילות</option>
+                        <option value="sedentary">יושבני (פעילות גופנית מועטה או ללא)</option>
+                        <option value="light">קלה (פעילות גופנית קלה/התעמלות קלה 1-3 ימים בשבוע)</option>
+                        <option value="moderate">מתונה (פעילות גופנית בינונית/התעמלות בינונית 3-5 ימים בשבוע)</option>
+                        <option value="active">פעילה (פעילות גופנית אינטנסיבית/התעמלות אינטנסיבית 6-7 ימים בשבוע)</option>
+                        <option value="veryActive">פעילה מאוד (עבודה פיזית קשה/אימונים אינטנסיביים מאוד)</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-warning mb-2">חשב קלוריות</button>
+            </form>
+
+            <div id="ResultCaloriesdiv" class="alert alert-info mt-4">
+                <strong>צריכת הקלוריות היומית שלך:</strong> <span id="calories-value"></span><br>
+                גיל: <span id="calories-age"></span><br>
+                גובה: <span id="calories-height"></span> ס"מ<br>
+                מין: <span id="calories-gender"></span><br>
+                רמת פעילות: <span id="calories-activity"></span><br>
+
+                <span id="calories-description"></span>
+            </div>
+
+        </div>
+
+       
+           <div class="sidebar-right">
+            @Html.Partial("SidebarRightPartial")
+        </div>
+        @* 
+        <div class="sidebar-right">
+            <div class="info-box" id="recipes">
+                <h3>מתכונים</h3>
+                <a href="#"><img src="/path/to/recipe1.jpg" alt="Recipe 1"></a>
+                <!-- תכנות להחלפת התמונות כל 15 שניות -->
+            </div>
+
+            <div class="info-box">
+                <h3>הרשמה לניוזילטר</h3>
+                <form>
+                    <input id="InputNews" type="email" placeholder="הכנס את המייל שלך">
+                    <button id="btnNews" class="btn btn-warning" type="submit">הרשם</button>
+                </form>
+            </div>
+
+            <div class="info-box">
+                <h3>עמוד מועדפים</h3>
+                <p>כאן יוצגו המועדפים שלך.</p>
+            </div>
+
+            <div class="info-box">
+                <h3>מתכונים מומלצים</h3>
+                <ul>
+                    <li><a href="#">מתכון 1</a></li>
+                    <li><a href="#">מתכון 2</a></li>
+                    <li><a href="#">מתכון 3</a></li>
+                </ul>
+            </div>
+        </div>*@
+    </div>
+
+    <script>
+        function calculateCalories(event) {
+            event.preventDefault();
+            const weight = document.getElementById('weight').value;
+            const height = document.getElementById('height').value;
+            const age = document.getElementById('age').value;
+            const gender = document.getElementById('gender').value;
+            const activityLevel = document.getElementById('activityLevel').value;
+
+            let bmr;
+            if (gender === 'male') {
+                bmr = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+            } else {
+                bmr = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+            }
+
+            let calories;
+            switch (activityLevel) {
+                case 'sedentary':
+                    calories = bmr * 1.2;
+                    break;
+                case 'light':
+                    calories = bmr * 1.375;
+                    break;
+                case 'moderate':
+                    calories = bmr * 1.55;
+                    break;
+                case 'active':
+                    calories = bmr * 1.725;
+                    break;
+                case 'veryActive':
+                    calories = bmr * 1.9;
+                    break;
+            }
+
+            document.getElementById('calories-value').innerText = Math.round(calories) + ' קלוריות';
+            document.getElementById('calories-age').innerText = age;
+            document.getElementById('calories-height').innerText = height;
+            document.getElementById('calories-gender').innerText = gender === 'male' ? 'גבר' : 'אישה';
+            document.getElementById('calories-activity').innerText = document.getElementById('activityLevel').options[document.getElementById('activityLevel').selectedIndex].text;
+            document.getElementById('calories-description').innerText = 'זו ההמלצה לכמות הקלוריות היומית בהתאם לנתונים שהזנתם.';
+        }
+    </script>
+
+</body>
+</html>

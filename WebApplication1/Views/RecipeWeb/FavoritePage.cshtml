@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <title>FavoritePage</title>
+    <link rel="stylesheet" href="/css/FavoritePage.css" />
+</head>
+<body>
+    <div class="container" id="ConDivFav">
+        <div class="row justify-content-center mt-5">
+            @foreach (var recipe in Model)
+            {
+                <div class="col-md-4 d-flex justify-content-center">
+                    <div id="blurred-div" style="border:double;">
+                        <h3 class="RcpdtlsHomePage">@recipe.RecipeName</h3>
+                        <p class="RcpdtlsHomePage">זמן הכנה: @recipe.PreparationTime</p>
+                        <p class="RcpdtlsHomePage">רמת קושי: @recipe.DifficultyLevel</p>
+                        <img src="@recipe.ImageRecipe" alt="תמונה של המתכון @recipe.RecipeName" style="max-width: 100%; height: auto;">
+                        <a href="@Url.Action("RecipeDetails", new { recipeId = recipe.RecipeID })" class="recipe-link" aria-label="לפרטי המתכון @recipe.RecipeName" style="background-color: #ffce67; color: black;">לפרטי המתכון</a>
+                        <form asp-action="RemoveFromFavorites" method="post" style="display:inline;">
+                            <input type="hidden" name="recipeId" value="@recipe.RecipeID" />
+                            <button type="submit" class="btn btn-danger" aria-label="הסר את המתכון @recipe.RecipeName מהמועדפים">הסר מהמועדפים</button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</body>
+</html>

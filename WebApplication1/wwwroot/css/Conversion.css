@@ -1,0 +1,195 @@
+﻿body {
+    background-image: url('/images/background/BackGroundBtn.jpg');
+    background-size: cover;
+    background-position: center;
+    font-family: Arial, sans-serif;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.main-content {
+    flex: 3;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 0 20px;
+    color: white;
+}
+
+#response-message {
+    font-family: "Amatic SC", sans-serif;
+}
+
+.sidebar-right, .sidebar-left {
+    width: 20%;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.info-box {
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+    .info-box img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+    }
+
+.conversion-table {
+    margin-bottom: 20px;
+}
+
+    .conversion-table table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .conversion-table th, .conversion-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: right;
+    }
+
+
+
+h2 {
+    font-family: "Amatic SC", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    color: #ffce67;
+}
+
+h1 {
+    font-family: "Amatic SC", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    color: #ffce67;
+}
+
+
+
+.faq-item {
+    background-color: rgba(200, 200, 200, 0.5);
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+}
+
+    .faq-item h2 {
+        margin-top: 0;
+        color: #ffce67;
+    }
+
+    .faq-item p {
+        margin-bottom: 0;
+    }
+
+#InputNews {
+    width: 100%;
+}
+
+#btnNews {
+    margin-top: 7%;
+}
+
+h3 {
+    font-family: "Amatic SC", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    color: black;
+    font-size: 3em;
+}
+
+@media screen and (max-width: 768px) {
+    .sidebar-right, .sidebar-left {
+        display: none;
+    }
+}
+/*
+#response-message {
+    font-family: "Amatic SC", sans-serif;
+}
+
+.sidebar-right, .sidebar-left {
+    width: 20%;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.info-box {
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+    .info-box img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+    }
+
+.conversion-table {
+    margin-bottom: 20px;
+}
+
+    .conversion-table table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .conversion-table th, .conversion-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: right;
+    }
+
+
+    .faq-item p {
+        margin-bottom: 0;
+    }
+
+#InputNews {
+    width: 100%;
+}
+
+#btnNews {
+    margin-top: 7%;
+}
+
+h3 {
+    font-family: "Amatic SC", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    color: black;
+    font-size: 3em;
+}
+
+@@media screen and (max-width: 768px) {
+    .sidebar-right, .sidebar-left {
+        display: none;
+    }
+}
+*/

@@ -1,0 +1,490 @@
+﻿html {
+    overflow-x: hidden;
+}
+
+body {
+    background-image: url('/images/background/BackGroundBtn.jpg');
+    background-size: cover;
+    overflow-x: hidden;
+}
+
+#PRecipeInfo {
+    color: white;
+    font-family: "Amatic SC", sans-serif;
+    font-weight: bold;
+    font-style: normal;
+    font-size: xx-large;
+}
+
+#recipes-display {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+    margin: 2%;
+}
+
+    #recipes-display div {
+        flex-basis: 15%;
+        margin: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    #recipes-display img {
+        width: 100%;
+        height: auto;
+        border-radius: 5px;
+    }
+
+    #recipes-display .recipe-link {
+        font-family: "Amatic SC", sans-serif;
+        display: block;
+        text-align: center;
+        margin-top: 10px;
+        padding: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+.ingredient-btn {
+    margin: 5px;
+    font-family: "Amatic SC", sans-serif;
+    font-weight: bold;
+    font-style: normal;
+    font-size: x-large;
+}
+
+    .ingredient-btn.selected {
+        background-color: #3A3A3A;
+        color: white;
+    }
+
+#selected-ingredients-display {
+    padding: 2%;
+    color: white;
+    font-family: "Amatic SC", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: xx-large;
+}
+
+#ingredients {
+    padding: 3%;
+    margin-top: -4%;
+}
+
+.selected-ingredient {
+    color: wheat;
+}
+
+.RcpdtlsHomePage {
+    color: white;
+}
+
+#DivContent {
+    margin: 10%;
+}
+
+#SendResponseDiv {
+    background-position: bottom;
+    margin-right: 3%;
+    margin: 10%;
+}
+
+
+
+#CubeBackground {
+    background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(1px);
+    width: 75%;
+    margin-bottom: 10%;
+    border: 2px solid black;
+    border-radius: 5%;
+    padding: 3%;
+    margin-right: 20%;
+    position: relative; 
+}
+
+    #CubeBackground::before,
+    #CubeBackground::after {
+        content: "";
+        position: absolute;
+        border: 2px solid black;
+        width: calc(100% - 20px);
+        height: calc(100% - 20px);
+        pointer-events: none; 
+    }
+
+    #CubeBackground::before {
+        top: -10px; 
+        left: -10px;
+        border-width: 2px 0 0 2px; 
+    }
+
+    #CubeBackground::after {
+        bottom: -10px;
+        right: -10px; 
+        border-width: 0 2px 2px 0; 
+    }
+
+@@media (max-width: 480px), (max-width: 768px) {
+    #CubeBackground {
+        width: 100%; 
+        border: 2px solid black;
+        border-radius: 5%;
+        padding: 3%;
+        margin-right: 0; 
+        margin-bottom: 50%; 
+    }
+}
+
+
+.formclass {
+    border: ridge;
+    font-size: xx-large;
+}
+
+#mailInput {
+    margin-top: 6%;
+}
+
+#likeAndShareRow {
+    margin-top: 2%;
+}
+
+#iconDiv {
+    padding-right: 11%;
+    padding-left: 11%;
+    margin-top: 10%;
+}
+
+#iconDivHeder {
+    padding-right: 15%;
+    color: white;
+    font-weight: bold;
+    font-style: normal;
+    font-size: xx-large;
+}
+
+#FormDesignEmailRes {
+    background-color: #DCDCDC;
+    width: 90%;
+    max-width: 600px;
+    padding: 10px;
+    border: 2px solid black;
+    border-radius: 5px;
+    margin: auto;
+    margin-top: 10%;
+    text-align: right;
+    border-radius: 10px;
+    box-shadow: 0 50px 100px rgba(0, 0, 0, 1.5);
+}
+
+.form-style-EmailRes {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#emailBody {
+    width: 100%;
+}
+
+#emailSubject {
+    width: 100%;
+}
+
+.btnEmail {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .btnEmail:hover {
+        background-color: #0056b3;
+    }
+
+
+.sketchy {
+    --b: .5em;
+    --c: 3em;
+    --r: 2em; 
+    position: relative;
+    margin: 1em auto;
+    border: solid var(--b) transparent;
+    padding: 1em;
+    max-width: 26em;
+    font: 1.25em ubuntu, sans-serif;
+    &::before
+
+{
+    position: absolute;
+    z-index: -1;
+    inset: calc(-1*var(--b));
+    border: inherit;
+    border-radius: var(--r);
+    background: linear-gradient(orange, deeppink, purple) border-box;
+    --corner: conic-gradient(from -90deg at var(--c) var(--c), red 25%, #0000 0) 0 0/ calc(100% - var(--c)) calc(100% - var(--c)) border-box;
+    --inner: conic-gradient(red 0 0) padding-box;
+    -webkit-mask: var(--corner), var(--inner);
+    -webkit-mask-composite: source-out;
+    mask: var(--corner) subtract, var(--inner);
+    content: ''
+}
+
+}
+
+.sketchy1 {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    padding: 3rem 4rem;
+    border: 3px solid wheat;
+    font-size: 2.5rem;
+    border-radius: 2% 6% 5% 4% / 1% 1% 2% 4%;
+    text-transform: uppercase;
+    letter-spacing: 0.3ch;
+    position: relative;
+}
+
+.icons-container {
+    display: flex;
+    flex-direction: row; 
+    justify-content: center;
+    gap: 1rem;
+}
+
+
+
+@@keyframes changeColor {
+    0% {
+        border: 2px solid #EB366D;
+    }
+
+    25% {
+        border: 2px solid #F4E6B5;
+    }
+
+    50% {
+        border: 2px solid #D6E5FF;
+    }
+
+    75% {
+        border: 2px solid #A2F8CD;
+    }
+
+    100% {
+        border: 2px solid #E5BDBB;
+    }
+}
+
+.colorful-icon {
+    border-radius: 10%;
+    animation: changeColor 2s infinite alternate; 
+}
+
+/*רקע למתכונים חצי שקוף*/
+#blurred-div {
+    background-color: rgba(255, 255, 255, 0.5); 
+    backdrop-filter: blur(1px); 
+}
+
+.form-control {
+    width: 95% !important;
+}
+
+
+#fontCube {
+    font-family: "Amatic SC", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    color: #ffb51b;
+    font-size: 2em;
+}
+
+.form-label {
+    font-family: "Amatic SC", sans-serif;
+    color: black;
+    font-size: xx-large;
+    font-weight: bold;
+}
+
+#subCubeMas {
+    font-family: "Amatic SC", sans-serif;
+    color: black;
+    font-size: xx-large;
+    font-weight: bold;
+}
+
+
+#CowPic2, #FoodPreservationPic, #FreezingFoodPic, #SpicesPic {
+    max-width: 100%;
+
+}
+
+
+.borderDivContent {
+    width: 21%;
+    border: 2px solid black;
+    padding: 1%;
+    margin: 3%;
+    margin-left: 1%;
+    position: relative;
+}
+
+    .borderDivContent::before,
+    .borderDivContent::after {
+        content: "";
+        position: absolute;
+        border: 2px solid black;
+        width: calc(100% - 20px);
+        height: calc(100% - 20px);
+        pointer-events: none; 
+    }
+
+    .borderDivContent::before {
+        top: -10px;
+        left: -10px; 
+        border-width: 2px 0 0 2px; 
+    }
+
+    .borderDivContent::after {
+        bottom: -10px; 
+        right: -10px; 
+        border-width: 0 2px 2px 0; 
+    }
+
+@@media (max-width: 480px), (max-width: 768px) {
+    .borderDivContent {
+        width: 100%; 
+        border: 2px solid black;
+        border-radius: 5%;
+        padding: 3%;
+        margin-right: 0; 
+        margin-bottom: 50%;
+    }
+}
+
+
+
+
+#FreezingFoodPic {
+    margin-right: -4.5%;
+}
+
+p {
+    font-family: "Amatic SC", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: xx-large;
+    color: #ffce67;
+}
+
+.Pabout1 {
+    font-family: "Amatic SC", sans-serif;
+    font-size: xx-large;
+    color: #ffce67;
+    line-height: normal;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.Pabout {
+    font-family: "Amatic SC", sans-serif;
+    font-size: x-large;
+    color: #ffce67;
+    line-height: normal;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.3);
+    display: inline-block; 
+    padding: 0 5px; 
+    border-radius: 5px; 
+}
+
+
+h2 {
+    font-family: "Amatic SC", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    color: #f9a900;
+    font-size: 3em; 
+}
+
+.guide-item {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+    .guide-item:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+.modal-content {
+    background-color: #020202a1;
+}
+
+.img-fluid {
+    max-width: 70%;
+    height: auto;
+    border-radius: 50%; 
+}
+
+.video-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+    margin-bottom: 10%;
+}
+
+    .video-container iframe {
+        width: 560px;
+        height: 315px;
+    }
+
+
+@@media (max-width: 1024px) and (orientation: landscape), (max-width: 768px) {
+    #DivSendRes, .d-flex.align-items-center {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    #DivSendRes {
+        margin-bottom: 2rem;
+    }
+
+    #iconDiv {
+        padding-right: 0;
+    }
+
+    #iconDivHeder {
+        padding-right: 0;
+        text-align: center;
+    }
+
+    .Pabout {
+        margin-bottom: 1rem;
+    }
+
+    .video-container {
+        padding: 10px;
+    }
+
+        .video-container iframe {
+            width: 100%;
+            height: auto;
+        }
+}

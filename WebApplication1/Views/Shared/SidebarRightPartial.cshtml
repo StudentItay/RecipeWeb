@@ -1,0 +1,183 @@
+﻿@* HTML *@
+<div class="info-box" id="recipes">
+    <h3>מתכונים</h3>
+    <a href="#" id="recipe-link"><img src="" alt="Recipe photo" id="recipe-image"></a>
+    <!-- תכנות להחלפת התמונות כל 15 שניות -->
+</div>
+
+<div class="info-box">
+    <h3>הרשמה לניוזלטר</h3>
+    <form id="newsletter-form">
+        <input id="InputNews" type="email" placeholder="הכנס את המייל שלך" required>
+        <button id="btnNews" class="btn btn-warning" type="submit">הרשם</button>
+    </form>
+    <div id="response-message"></div>
+</div>
+
+<div class="info-box">
+    <h4>המתכונים הפופולארים ביותר:</h4>
+    <ul id="popular-recipes">
+        <!-- המתכונים הפופולארים יופיעו כאן -->
+    </ul>
+</div>
+
+<div class="info-box">
+    <h3>מתכונים מומלצים</h3>
+    <ul>
+        <li><a href="/recipe/15">לביבות קולורבי</a></li>
+        <li><a href="/recipe/12">בית לזית</a></li>
+        <li><a href="/recipe/6">סלט טאבולה</a></li>
+    </ul>
+</div>
+
+@* JavaScript *@
+<script>
+    $(document).ready(function () {
+        // טעינת מתכונים פופולארים
+        function loadPopularRecipes() {
+            $.ajax({
+                url: '/api/popularRecipes',
+                type: 'GET',
+                success: function (data) {
+                    const popularRecipes = $('#popular-recipes');
+                    popularRecipes.empty(); // ניקוי תוכן קודם אם יש
+                        
+                    // הוספת כל מתכון לרשימה
+                    data.forEach(recipe => {
+                      console.log( recipe);
+                   popularRecipes.append(`<li><a href="/recipe/${recipe.recipeID}">${recipe.recipeName}</a></li>`);
+                    });
+                },
+                error: function () {
+                    $('#popular-recipes').text('קרתה שגיאה בטעינת המתכונים הפופולארים.');
+                }
+            });
+        }
+
+        // הרשמה לניוזלטר
+        $('#newsletter-form').on('submit', function (event) {
+            event.preventDefault();
+
+            const email = $('#InputNews').val();
+            const responseMessage = $('#response-message');
+
+            $.ajax({
+                url: '/RecipeWeb/subscribe',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ email: email }),
+                success: function (response) {
+                    responseMessage.text('נרשמת בהצלחה לניוזלטר!');
+                    $('#InputNews').val('');
+                },
+                error: function (xhr) {
+                    if (xhr.status === 409) {
+                        responseMessage.text('האימייל כבר רשום למערכת.');
+                    } else {
+                        responseMessage.text('קרתה שגיאה בהרשמה. נסה שנית.');
+                    }
+                }
+            });
+        });
+
+        // קריאה לפונקציה לטעינת מתכונים פופולארים
+        loadPopularRecipes();
+
+        // שליחת בקשה ל-API להחזרת המתכונים הפופולארים
+        $.ajax({
+            url: '/api/popularRecipes',
+            type: 'GET',
+            success: function (data) {
+                const popularRecipes = $('#popular-recipes');
+                popularRecipes.empty(); // ניקוי תוכן קודם אם יש
+
+                // הוספת כל מתכון לרשימה
+                data.forEach(recipe => {
+                    popularRecipes.append(`<li><a href="/recipe/${recipe.RecipeID}">${recipe.recipeName}</a></li>`);
+                });
+            },
+            error: function () {
+                $('#popular-recipes').text('קרתה שגיאה בטעינת המתכונים הפופולארים.');
+            }
+        });
+
+        // הסקריפט להחלפת תמונות כל 15 שניות
+        let recipes = [];
+        let currentIndex = 0;
+
+        async function fetchRecipes() {
+            try {
+                const response = await fetch('/api/recipes');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                recipes = await response.json();
+               
+                updateRecipe();
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+            }
+        }
+
+        function updateRecipe() {
+            if (recipes.length > 0) {
+                console.log('Current Recipe:', recipes[currentIndex]);
+                const recipeImage = document.getElementById('recipe-image');
+                const recipeLink = document.getElementById('recipe-link');
+                recipeImage.src = recipes[currentIndex].imageRecipe;
+                recipeLink.href = `/recipe/${recipes[currentIndex].recipeID}`;
+            }
+        }
+
+        function changeRecipe() {
+            currentIndex = (currentIndex + 1) % recipes.length;
+            updateRecipe();
+        }
+
+        fetchRecipes();
+        setInterval(changeRecipe, 5000); // כל 5 שניות
+
+        document.getElementById('recipe-link').addEventListener('click', function (event) {
+            event.preventDefault();
+            const recipeLink = document.getElementById('recipe-link').href;
+            window.location.href = recipeLink;
+        });
+    });
+</script>
+
+@* CSS *@
+<style>
+    .info-box {
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        /* background-color: #f7f7f7;*/
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+        .info-box img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+    #popular-recipes,
+    #recommended-recipes {
+        list-style-type: none;
+        padding: 0;
+    }
+
+        #popular-recipes li,
+        #recommended-recipes li {
+            margin: 5px 0;
+        }
+
+    #response-message {
+        font-family: 'Arial', sans-serif; /* שנו את שם הפונט לפונט הרצוי */
+        font-size: 16px; /* גודל הפונט */
+        color: #333; /* צבע הפונט */
+    }
+
+
+
+</style>
